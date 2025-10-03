@@ -1,0 +1,40 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Tailwind CSS 4 */
+@import "tailwindcss";
+
+/* Custom CSS Variables */
+:root {
+  /* Custom Color Palette - IELTS Institute Theme */
+  --color-primary: #2563EB;
+  /* blue-600 - Trust, Professionalism */
+  --color-accent: #FACC15;
+  /* yellow-400 - Optimism, Success */
+  --color-background: #F9FAFB;
+  /* gray-50 - Clean, Minimal */
+  --color-text-primary: #111827;
+  /* gray-900 - Strong Readability */
+  --color-text-secondary: #6B7280;
+  /* gray-500 - Secondary Text */
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: #111827;
+  background-color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
