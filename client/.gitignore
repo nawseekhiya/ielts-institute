@@ -1,0 +1,39 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Vite cache
+.vite/
+
+# Tailwind CSS output (if using JIT or custom builds)
+*.css.d.ts
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Optional: macOS system files
+.AppleDouble
+.LSOverride
+
+# Optional: Windows system files
+ehthumbs.db
+Desktop.ini
