@@ -9,5 +9,7 @@
 
   body {
     font-family: 'Inter', sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
   }
 }
