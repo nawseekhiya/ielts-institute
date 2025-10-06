@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import Testimonials from './components/Testimonials';
+import Footer from './components/Footer';
+import EnrollModal from './components/EnrollModal';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!
-        </h1>
-    </>
+    <div className="min-h-screen bg-white">
+      <Navbar onEnrollClick={() => setIsModalOpen(true)} />
+      <Hero onEnrollClick={() => setIsModalOpen(true)} />
+      <Features />
+      <Testimonials />
+      <Footer />
+      <EnrollModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
   );
 }
 
