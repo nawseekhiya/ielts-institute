@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { Mic, FileText, Brain, Video, Video as LucideIcon } from "lucide-react";
 import { Button } from "./ui/Button";
-import { useState } from "react";
 
 interface Feature {
   icon: typeof LucideIcon;
@@ -42,7 +41,6 @@ const features: Feature[] = [
 ];
 
 export default function Features() {
-  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
   return (
     <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -123,7 +121,6 @@ export default function Features() {
           </p>
           <Button
               size="lg"
-              onClick={() => setIsEnrollModalOpen(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-8"
             >
               Explore Our Courses
