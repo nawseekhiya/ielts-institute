@@ -1,200 +1,135 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Mail, Phone, MapPin } from 'lucide-react';
-import { useState, type FormEvent } from 'react';
+import { motion } from "framer-motion";
+import { Mic, FileText, Brain, Video, Video as LucideIcon } from "lucide-react";
+import { Button } from "./ui/Button";
+import { useState } from "react";
 
-interface EnrollModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface Feature {
+  icon: typeof LucideIcon;
+  title: string;
+  description: string;
+  gradient: string;
 }
 
-export default function EnrollModal({ isOpen, onClose }: EnrollModalProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    country: '',
-  });
+const features: Feature[] = [
+  {
+    icon: Mic,
+    title: "Speaking Practice with Experts",
+    description:
+      "One-on-one sessions with certified IELTS trainers to perfect your pronunciation and fluency.",
+    gradient: "from-blue-500 to-blue-600",
+  },
+  {
+    icon: FileText,
+    title: "Mock Tests with Feedback",
+    description:
+      "Regular practice tests with detailed feedback to track your progress and improve weak areas.",
+    gradient: "from-yellow-500 to-yellow-600",
+  },
+  {
+    icon: Brain,
+    title: "AI Band Score Predictor",
+    description:
+      "Advanced AI technology predicts your band score and provides personalized improvement strategies.",
+    gradient: "from-purple-500 to-purple-600",
+  },
+  {
+    icon: Video,
+    title: "Flexible Online Courses",
+    description:
+      "Learn at your own pace with our comprehensive video lessons and interactive study materials.",
+    gradient: "from-green-500 to-green-600",
+  },
+];
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setIsSuccess(true);
-
-    setTimeout(() => {
-      setIsSuccess(false);
-      setFormData({ name: '', email: '', phone: '', country: '' });
-      onClose();
-    }, 2000);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
+export default function Features() {
+  const [isEnrollModalOpen, setIsEnrollModalOpen] = useState(false);
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-          />
+    <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Why Choose <span className="text-blue-600">IELTS Mastery</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Comprehensive tools and expert guidance to help you excel in every
+            module of the IELTS exam.
+          </p>
+        </motion.div>
 
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-md w-full relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 to-yellow-400"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="group relative"
+              >
+                <div className="relative h-full bg-white rounded-2xl p-8 shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-2xl">
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br"
+                    style={{
+                      backgroundImage: `linear-gradient(to bottom right, ${
+                        feature.gradient.includes("blue")
+                          ? "rgba(37, 99, 235, 0.05)"
+                          : feature.gradient.includes("yellow")
+                          ? "rgba(250, 204, 21, 0.05)"
+                          : feature.gradient.includes("purple")
+                          ? "rgba(147, 51, 234, 0.05)"
+                          : "rgba(34, 197, 94, 0.05)"
+                      }, transparent)`,
+                    }}
+                  ></div>
 
-              <div className="p-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-3xl font-bold text-gray-900">Enroll Now</h2>
-                  <motion.button
-                    whileHover={{ scale: 1.1, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={onClose}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    <X size={24} />
-                  </motion.button>
-                </div>
-
-                {!isSuccess ? (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name
-                      </label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="John Doe"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="john@example.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="+1 (555) 123-4567"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Country
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                        <input
-                          type="text"
-                          name="country"
-                          value={formData.country}
-                          onChange={handleChange}
-                          required
-                          className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          placeholder="United States"
-                        />
-                      </div>
-                    </div>
-
-                    <motion.button
-                      type="submit"
-                      disabled={isSubmitting}
-                      whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center justify-center gap-2">
-                          <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                          />
-                          Processing...
-                        </span>
-                      ) : (
-                        'Submit Enrollment'
-                      )}
-                    </motion.button>
-                  </form>
-                ) : (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="text-center py-8"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${feature.gradient} mb-6 shadow-lg`}
                   >
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                      className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
-                      <svg className="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </motion.div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Enrollment Successful!</h3>
-                    <p className="text-gray-600">We'll contact you shortly with next steps.</p>
+                    <Icon className="text-white" size={28} />
                   </motion.div>
-                )}
-              </div>
-            </motion.div>
-          </div>
-        </>
-      )}
-    </AnimatePresence>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 relative z-10">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 text-justify leading-relaxed relative z-10">
+                    {feature.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-16 text-center"
+        >
+          <p className="text-gray-600 mb-4">
+            Ready to start your IELTS journey?
+          </p>
+          <Button
+              size="lg"
+              onClick={() => setIsEnrollModalOpen(true)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+            >
+              Explore Our Courses
+            </Button>
+        </motion.div>
+      </div>
+    </section>
   );
 }
